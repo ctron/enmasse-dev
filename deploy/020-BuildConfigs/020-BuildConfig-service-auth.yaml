@@ -1,0 +1,35 @@
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: iot-auth-service
+  labels:
+    app: iot-core
+    enmasse-component: iot
+    enmasse-s2i: "true"
+spec:
+  triggers: 
+    - type: ImageChange
+    - type: ConfigChange
+  source: 
+    type: Git
+    git:
+      uri: https://github.com/eclipse/hono
+      ref: "0.8.x"
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: fabric8-s2i-java-custom:java11
+      env:
+      - name: MAVEN_ARGS_APPEND
+        value: -pl org.eclipse.hono:hono-service-auth --also-make --also-make -Pnetty-tcnative -Pnetty-native-linux-x86_64
+        #value: -pl org.eclipse.hono:hono-service-auth --also-make --also-make -Pnetty-tcnative -Pmetrics-prometheus -Pnetty-native-linux-x86_64
+      - name: ARTIFACT_DIR
+        value: services/auth/target
+      - name: ARTIFACT_COPY_ARGS
+        value: "*-exec.jar"
+  output:
+    to:
+      kind: ImageStreamTag
+      name: iot-auth-service:latest

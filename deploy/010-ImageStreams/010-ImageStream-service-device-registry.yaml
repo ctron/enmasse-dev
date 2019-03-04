@@ -1,0 +1,8 @@
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: iot-device-registry
+  labels:
+    app: iot-device-registry
+    enmasse-component: iot
+    enmasse-s2i: "true"

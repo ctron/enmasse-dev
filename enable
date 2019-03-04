@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$SCRIPTDIR/common"
+
+test -n "$1" || die "$0 <project-name>"
+PROJECT="$1"
+shift
+
+oc apply -f "$SCRIPTDIR/deploy/010-ImageStreams"
+oc apply -f "$SCRIPTDIR/deploy/020-BuildConfigs"
+
+triggers # install

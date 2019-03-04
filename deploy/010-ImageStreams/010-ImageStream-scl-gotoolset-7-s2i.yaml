@@ -1,0 +1,15 @@
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: go-toolset-7
+  labels:
+    enmasse-component: iot
+    enmasse-s2i: "true"
+spec:
+  tags:
+  - from:
+      kind: DockerImage
+      name: docker.io/centos/go-toolset-7-centos7:latest
+    name: "latest"
+    referencePolicy:
+      type: Local

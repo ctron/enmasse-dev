@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+die() { echo "$*" 1>&2 ; exit 1; }
+
+triggers() {
+oc -n "$PROJECT" set triggers deployment/iot-gc -c collector --from-image=iot-gc:latest $1
+oc -n "$PROJECT" set triggers deployment/iot-operator -c operator --from-image=iot-operator:latest $1
+
+oc -n "$PROJECT" set triggers deployment/iot-mqtt-adapter -c qdr-cfg --from-image=qdr-proxy-configurator:latest $1
+oc -n "$PROJECT" set triggers deployment/iot-mqtt-adapter -c mqtt-adapter --from-image=iot-mqtt-adapter:latest $1
+
+oc -n "$PROJECT" set triggers deployment/iot-http-adapter -c qdr-cfg --from-image=qdr-proxy-configurator:latest $1
+oc -n "$PROJECT" set triggers deployment/iot-http-adapter -c http-adapter --from-image=iot-http-adapter:latest $1
+}

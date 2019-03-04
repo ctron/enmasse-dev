@@ -1,0 +1,32 @@
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: iot-operator
+  labels:
+    app: iot-core
+    enmasse-component: iot
+    enmasse-s2i: "true"
+spec:
+  triggers: 
+    - type: ImageChange
+    - type: ConfigChange
+  source: 
+    type: Git
+    git:
+      uri: https://github.com/enmasseproject/enmasse
+      ref: master
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: go-toolset-7:latest
+      env:
+      - name: IMPORT_URL
+        value: github.com/enmasseproject/enmasse
+      - name: INSTALL_URL
+        value: github.com/enmasseproject/enmasse/cmd/iot-operator
+  output:
+    to:
+      kind: ImageStreamTag
+      name: iot-operator:latest
