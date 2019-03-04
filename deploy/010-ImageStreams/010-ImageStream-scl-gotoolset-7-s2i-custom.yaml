@@ -1,0 +1,7 @@
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: go-toolset-7-custom
+  labels:
+    enmasse-component: iot
+    enmasse-s2i: "true"

@@ -1,0 +1,27 @@
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: go-toolset-7-custom
+  labels:
+    enmasse-component: iot
+    enmasse-s2i: "true"
+spec:
+  triggers: 
+    - type: ImageChange
+    - type: ConfigChange
+  source: 
+    type: Git
+    git:
+      uri: https://github.com/ctron/enmasse-s2i
+      ref: master
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: go-toolset-7:latest
+      dockerfilePath: containers/go-toolset-7-custom/Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: go-toolset-7-custom:latest

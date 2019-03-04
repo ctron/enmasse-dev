@@ -9,7 +9,7 @@ test -n "$1" || die "$0 <project-name>"
 PROJECT="$1"
 shift
 
-oc apply -f "$SCRIPTDIR/deploy/010-ImageStreams"
-oc apply -f "$SCRIPTDIR/deploy/020-BuildConfigs"
+oc -n "$PROJECT" apply -f "$SCRIPTDIR/deploy/010-ImageStreams"
+oc -n "$PROJECT" apply -f "$SCRIPTDIR/deploy/020-BuildConfigs"
 
 triggers # install

@@ -19,7 +19,7 @@ spec:
     sourceStrategy:
       from:
         kind: ImageStreamTag
-        name: go-toolset-7:latest
+        name: go-toolset-7-custom:latest
       env:
       - name: IMPORT_URL
         value: github.com/enmasseproject/enmasse
