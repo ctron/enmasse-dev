@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -e
+
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "$SCRIPTDIR/../common"
+
+: ${PROJECT:=enmasse-infra}
+
+echo "Deleting EnMasse in '$PROJECT' … in 5 seconds"
+
+sleep 5
+
+# Delete CRs
+
+for i in addressspaces iotconfigs iotprojects; do
+	IFS=$'\n'
+	for o in $(oc get "$i" --all-namespaces -o go-template='{{range .items}}-n {{.metadata.namespace}} {{.metadata.name}}{{printf "\n"}}{{end}}'); do
+		echo oc delete "$i" "$o"
+	done
+	unset IFS
+done
+
+# Delete infrastructure
+
+KINDS=""
+KINDS+="deployment statefulset svc "
+KINDS+="clusterrolebinding clusterrole "
+KINDS+="rolebindings roles "
+KINDS+="sa "
+KINDS+="cm secrets "
+KINDS+="routes oauthclients "
+KINDS+="bc imagestreams "
+KINDS+="crds apiservice "
+KINDS+="pvc "
+
+for i in $KINDS; do
+	echo "Processing '$i'"
+	oc -n "$PROJECT" delete "$i" -l app=enmasse
+done
