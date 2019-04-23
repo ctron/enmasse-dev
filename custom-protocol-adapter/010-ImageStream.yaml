@@ -1,0 +1,24 @@
+---
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: iot-sigfox-adapter-s2i
+  labels:
+    app: iot-sigfox-adapter
+spec:
+  tags:
+  - from:
+      kind: DockerImage
+      name: fabric8/s2i-java:3.0-java11
+    importPolicy:
+      scheduled: true
+    name: latest
+    referencePolicy:
+      type: Source
+---
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: iot-sigfox-adapter
+  labels:
+    app: iot-sigfox-adapter

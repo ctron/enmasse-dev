@@ -1,0 +1,33 @@
+---
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: iot-sigfox-adapter
+  labels:
+    app: iot-sigfox-adapter
+spec:
+  triggers: 
+    - type: ImageChange
+    - type: ConfigChange
+  source: 
+    type: Git
+    git:
+      uri: https://github.com/ctron/hono
+      ref: feature/sigfox_1
+  strategy: 
+    type: source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: iot-sigfox-adapter-s2i:latest
+      env:
+      - name: MAVEN_ARGS_APPEND
+        value: -B -pl org.eclipse.hono:hono-adapter-sigfox-vertx --also-make
+      - name: ARTIFACT_DIR
+        value: adapters/sigfox-vertx/target
+      - name: ARTIFACT_COPY_ARGS
+        value: "*-exec.jar"
+  output:
+    to:
+      kind: ImageStreamTag
+      name: iot-sigfox-adapter:latest

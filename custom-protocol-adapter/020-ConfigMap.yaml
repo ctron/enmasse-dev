@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: iot-sigfox-adapter
+  name: iot-sigfox-adapter-config
+
+data:
+  application.yml: |
+
+    hono:
+      app:
+        maxInstances: 1
+        healthCheckPort: 8088
+        healthCheckBindAddress: 0.0.0.0
+      http:
+        bindAddress: 0.0.0.0
+        keyPath: /etc/tls/tls.key
+        certPath: /etc/tls/tls.crt
+        keyFormat: PEM
+      registration:
+        port: 5671
+        trustStoreFormat: PEM
+      credentials:
+        port: 5671
+        trustStoreFormat: PEM
+      tenant:
+        port: 5671
+        trustStoreFormat: PEM
+
+  logback-spring.xml: |+
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE xml>
+      <configuration>
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+          <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+          </encoder>
+        </appender>
+        <root level="INFO">
+          <appender-ref ref="STDOUT" />
+        </root>
+      </configuration>

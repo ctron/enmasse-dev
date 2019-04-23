@@ -1,0 +1,15 @@
+---
+kind: Route
+apiVersion: v1
+metadata:
+  labels:
+    app: iot-sigfox-adapter
+  name: iot-sigfox-adapter
+spec:
+  port:
+    targetPort: https
+  tls:
+    termination: reencrypt
+  to:
+    kind: Service
+    name: iot-sigfox-adapter
