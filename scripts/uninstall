@@ -24,7 +24,7 @@ done
 # Delete operator first
 
 for i in enmasse-operator; do
-	oc -n "$PROJECT" delete "deployment/$i" -l app=enmasse
+	oc -n "$PROJECT" delete "deployment/$i" --ignore-not-found=true
 done
 
 # Delete infrastructure
@@ -43,4 +43,12 @@ KINDS+="pvc "
 for i in $KINDS; do
 	echo "Processing '$i'"
 	oc -n "$PROJECT" delete "$i" -l app=enmasse
+done
+
+# Clean up leftovers
+
+for i in cm secrets route; do
+	echo "Cleaning up '$i'"
+	oc -n "$PROJECT" delete "$i" -l infraUuid
+	oc -n "$PROJECT" delete "$i" -l addressSpaceType
 done
