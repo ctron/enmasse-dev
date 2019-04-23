@@ -21,6 +21,12 @@ for i in addressspaces iotconfigs iotprojects; do
 	unset IFS
 done
 
+# Delete operator first
+
+for i in enmasse-operator; do
+	oc -n "$PROJECT" delete "deployment/$i" -l app=enmasse
+done
+
 # Delete infrastructure
 
 KINDS=""
