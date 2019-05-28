@@ -1,0 +1,33 @@
+---
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: iot-custom-device-registry
+  labels:
+    app: iot-custom-device-registry
+spec:
+  triggers: 
+    - type: ImageChange
+    - type: ConfigChange
+  source: 
+    type: Git
+    git:
+      uri: https://github.com/jbtrystram/hono
+      ref: http_api
+  strategy: 
+    type: source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: iot-custom-device-registry-s2i:latest
+      env:
+      - name: MAVEN_ARGS_APPEND
+        value: -B -pl org.eclipse.hono:hono-service-device-registry --also-make
+      - name: ARTIFACT_DIR
+        value: services/device-registry/target
+      - name: ARTIFACT_COPY_ARGS
+        value: "*-exec.jar"
+  output:
+    to:
+      kind: ImageStreamTag
+      name: iot-custom-device-registry:latest

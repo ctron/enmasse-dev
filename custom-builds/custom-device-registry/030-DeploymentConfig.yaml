@@ -1,0 +1,111 @@
+kind: DeploymentConfig
+apiVersion: v1
+metadata:
+  name: iot-custom-device-registry
+  labels:
+    app: iot-custom-device-registry
+    deploymentconfig: iot-custom-device-registry
+    enmasse-component: iot
+spec:
+  replicas: 1
+
+  selector:
+    app: iot-custom-device-registry
+    deploymentconfig: iot-custom-device-registry
+
+  strategy:
+    type: Rolling
+
+  triggers:
+
+    - type: ConfigChange
+
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - device-registry
+        from:
+          kind: ImageStreamTag
+          name: iot-custom-device-registry:latest
+
+  template:
+    metadata:
+      labels:
+        app: iot-custom-device-registry
+        deploymentconfig: iot-custom-device-registry
+    spec:
+      containers:
+
+# Main protocol adapter container
+
+      - name: device-registry
+        imagePullPolicy: Always
+        env:
+        - name: SPRING_CONFIG_LOCATION
+          value: file:///etc/config/
+        - name: SPRING_PROFILES_ACTIVE
+          value: prometheus
+        - name: LOGGING_CONFIG
+          value: file:///etc/config/logback-spring.xml
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: HONO_AUTH_HOST
+          value: iot-auth-service.$(KUBERNETES_NAMESPACE).svc
+        - name: HONO_AUTH_TRUST_STORE_PATH
+          value: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+        - name: HONO_REGISTRATION_HOST
+          value: iot-device-registry.$(KUBERNETES_NAMESPACE).svc
+
+        - name: HONO_REGISTRY_SVC_MAX_DEVICES_PER_TENANT
+          value: "1000000"
+
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 8088
+            scheme: HTTP
+          initialDelaySeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 8088
+            scheme: HTTP
+          initialDelaySeconds: 180
+        resources:
+          limits:
+            memory: 512Mi
+        ports:
+        - containerPort: 8778
+          name: jolokia
+        - containerPort: 8443
+          name: https
+          protocol: TCP
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 5671
+          name: amqps
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /etc/config
+          name: config
+          readOnly: true
+        - mountPath: /etc/tls
+          name: tls
+          readOnly: true
+        - mountPath: /var/lib/hono/device-registry
+          name: registry
+
+      volumes:
+      - name: config
+        configMap:
+          name: iot-custom-device-registry-config
+      - name: registry
+        persistentVolumeClaim:
+          claimName: iot-custom-device-registry-pvc
+      - name: tls
+        secret:
+          secretName: iot-custom-device-registry-tls

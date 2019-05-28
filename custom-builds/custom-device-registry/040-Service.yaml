@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: iot-custom-device-registry
+  labels:
+    app: iot-custom-device-registry
+    deploymentconfig: iot-custom-device-registry
+  annotations:
+    service.alpha.openshift.io/serving-cert-secret-name: iot-custom-device-registry-tls
+spec:
+  ports:
+    - name: https
+      port: 8443
+      targetPort: 8443
+      protocol: TCP
+  selector:
+    app: iot-custom-device-registry
+    deploymentconfig: iot-custom-device-registry

@@ -1,0 +1,15 @@
+---
+kind: Route
+apiVersion: v1
+metadata:
+  labels:
+    app: iot-custom-device-registry
+  name: iot-custom-device-registry
+spec:
+  port:
+    targetPort: https
+  tls:
+    termination: reencrypt
+  to:
+    kind: Service
+    name: iot-custom-device-registry
