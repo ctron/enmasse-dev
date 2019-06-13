@@ -13,6 +13,10 @@ spec:
       port: 8443
       targetPort: 8443
       protocol: TCP
+    - name: amqps
+      port: 5671
+      targetPort: 5671
+      protocol: TCP
   selector:
     app: iot-custom-device-registry
     deploymentconfig: iot-custom-device-registry
