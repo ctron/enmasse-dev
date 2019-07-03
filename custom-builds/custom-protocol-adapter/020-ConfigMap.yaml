@@ -13,7 +13,7 @@ data:
         maxInstances: 1
         healthCheckPort: 8088
         healthCheckBindAddress: 0.0.0.0
-      http:
+      sigfox:
         bindAddress: 0.0.0.0
         keyPath: /etc/tls/tls.key
         certPath: /etc/tls/tls.crt
@@ -22,6 +22,9 @@ data:
         port: 5671
         trustStoreFormat: PEM
       credentials:
+        port: 5671
+        trustStoreFormat: PEM
+      deviceConnection:
         port: 5671
         trustStoreFormat: PEM
       tenant:

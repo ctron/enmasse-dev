@@ -62,27 +62,31 @@ spec:
           value: localhost
         - name: HONO_COMMAND_PORT
           value: "5672"
-        - name: HONO_REGISTRATION_HOST
-          value: iot-device-registry.$(KUBERNETES_NAMESPACE).svc
+
         - name: HONO_CREDENTIALS_HOST
+          value: iot-device-registry.$(KUBERNETES_NAMESPACE).svc
+        - name: HONO_DEVICE_CONNECTION_HOST
+          value: iot-device-registry.$(KUBERNETES_NAMESPACE).svc
+        - name: HONO_REGISTRATION_HOST
           value: iot-device-registry.$(KUBERNETES_NAMESPACE).svc
         - name: HONO_TENANT_HOST
           value: iot-tenant-service.$(KUBERNETES_NAMESPACE).svc
+
         - name: HONO_CREDENTIALS_TRUST_STORE_PATH
+          value: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+        - name: HONO_DEVICE_CONNECTION_TRUST_STORE_PATH
           value: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
         - name: HONO_REGISTRATION_TRUST_STORE_PATH
           value: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
         - name: HONO_TENANT_TRUST_STORE_PATH
           value: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
 
-        - name: HONO_REGISTRATION_USERNAME
-          value: http-adapter@HONO
-        - name: HONO_CREDENTIALS_HOST
-          value: iot-device-registry.$(KUBERNETES_NAMESPACE).svc
         - name: HONO_CREDENTIALS_USERNAME
           value: http-adapter@HONO
-        - name: HONO_TENANT_HOST
-          value: iot-tenant-service.$(KUBERNETES_NAMESPACE).svc
+        - name: HONO_DEVICE_CONNECTION_USERNAME
+          value: http-adapter@HONO
+        - name: HONO_REGISTRATION_USERNAME
+          value: http-adapter@HONO
         - name: HONO_TENANT_USERNAME
           value: http-adapter@HONO
 
