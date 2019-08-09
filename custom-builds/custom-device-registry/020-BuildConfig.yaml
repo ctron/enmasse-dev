@@ -12,8 +12,8 @@ spec:
   source: 
     type: Git
     git:
-      uri: https://github.com/jbtrystram/hono
-      ref: http_api
+      uri: https://github.com/ctron/enmasse
+      ref: registry
   strategy: 
     type: source
     sourceStrategy:
@@ -22,11 +22,9 @@ spec:
         name: iot-custom-device-registry-s2i:latest
       env:
       - name: MAVEN_ARGS_APPEND
-        value: -B -pl org.eclipse.hono:hono-service-device-registry --also-make
+        value: -B -pl io.enmasse:iot-device-registry-infinispan --also-make
       - name: ARTIFACT_DIR
-        value: services/device-registry/target
-      - name: ARTIFACT_COPY_ARGS
-        value: "*-exec.jar"
+        value: iot/iot-device-registry-infinispan/target
   output:
     to:
       kind: ImageStreamTag

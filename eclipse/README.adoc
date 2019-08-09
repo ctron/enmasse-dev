@@ -36,7 +36,7 @@ You should also either run Eclipse with Java 11, or register Java 11.
 == Additional core plugins
 
 Adding a few plugins from the core release may be helpful. Open the "Help" -> "Install New Software…"
-dialog, select the core release URL (e.g. for "2019-03" this is `http://download.eclipse.org/releases/2019-03`)
+dialog, select the core release URL (e.g. for "2019-06" this is `http://download.eclipse.org/releases/2019-06`)
 and install:
 
   * Docker
@@ -113,7 +113,7 @@ image:images/prj_maven_1.png[Eclipse Maven profile settings]
 
 == Launch configurations
 
-See the "launch configs" in launch/ for a few helpful launchers. If
+See the "launch configs" in link:launch/[launch/]  for a few helpful launchers. If
 you have cloned and imported this repository into your workspace, then
 those launch configurations should appear automatically in your "Run"
 button.

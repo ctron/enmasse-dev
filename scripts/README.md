@@ -1,5 +1,7 @@
 # Scripts
 
+Some helper scripts.
+
 ## uninstall
 
 You can uninstall EnMasse with the `uninstall` script. By default it will uninstall EnMasse
