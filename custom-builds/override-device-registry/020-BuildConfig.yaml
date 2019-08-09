@@ -1,0 +1,31 @@
+---
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: iot-override-device-registry
+  labels:
+    app: iot-override-device-registry
+spec:
+  triggers: 
+    - type: ImageChange
+    - type: ConfigChange
+  source: 
+    type: Git
+    git:
+      uri: https://github.com/ctron/enmasse
+      ref: registry
+  strategy: 
+    type: source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: iot-override-device-registry-s2i:latest
+      env:
+      - name: MAVEN_ARGS_APPEND
+        value: -B -pl io.enmasse:iot-device-registry-infinispan --also-make
+      - name: ARTIFACT_DIR
+        value: iot/iot-device-registry-infinispan/target
+  output:
+    to:
+      kind: ImageStreamTag
+      name: iot-device-registry-infinispan:latest

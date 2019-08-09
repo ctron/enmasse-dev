@@ -1,0 +1,27 @@
+---
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: iot-override-device-registry-s2i
+  labels:
+    app: iot-override-device-registry
+spec:
+  tags:
+  - from:
+      kind: DockerImage
+      name: fabric8/s2i-java:3.0-java11
+    importPolicy:
+      scheduled: true
+    name: latest
+    referencePolicy:
+      type: Source
+---
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: iot-device-registry-infinispan
+  labels:
+    app: iot-override-device-registry
+spec:
+  lookupPolicy:
+    local: true
