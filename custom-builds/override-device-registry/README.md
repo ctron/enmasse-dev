@@ -19,9 +19,16 @@ by the `BuildConfig`. Once the build populated the image stream, you can overrid
 the image.
 
 **Note:** The image stream is configured to "hijack" local, unqualified image names
-          and replace them with the internal registry image. It does however not
-          automatically trigger a rollout of new images once the get pushed to the
-          image stream.
+          and replace them with the internal registry image.
+
+## Image trigger
+
+You can set an image trigger for the deployment/stateful set as well:
+
+    oc set triggers deployment/iot-device-registry --from-image=iot-device-config-infinispan:latest --container device-registry
+
+**Note:** This only works if the annotations of the deployment do not get overwritten
+          by any operator.
 
 ## Override
 
