@@ -9,10 +9,7 @@ data:
   application.yml: |
 
     hono:
-      app:
-        maxInstances: 1
-        healthCheckBindAddress: 0.0.0.0
-        healthCheckPort: 8088
+
       auth:
         port: 5671
         keyPath: /etc/tls/tls.key
@@ -20,28 +17,37 @@ data:
         keyFormat: PEM
         trustStorePath: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
         trustStoreFormat: PEM
-      registry:
-        amqp:
-          bindAddress: 0.0.0.0
-          keyPath: /etc/tls/tls.key
-          certPath: /etc/tls/tls.crt
-          keyFormat: PEM
-        rest:
-          bindAddress: 0.0.0.0
-          keyPath: /etc/tls/tls.key
-          certPath: /etc/tls/tls.crt
-          keyFormat: PEM
-        svc:
-          filename: /var/lib/hono/device-registry/device-identities.json
-          saveToFile: true
-      credentials:
-        svc:
-          credentialsFilename: /var/lib/hono/device-registry/credentials.json
-          saveToFile: true
-      tenant:
-        svc:
-          filename: /var/lib/hono/device-registry/tenants.json
-          saveToFile: true
+
+    enmasse:
+      iot:
+
+        app:
+          maxInstances: 1
+
+        healthCheck:
+          insecurePortBindAddress: 0.0.0.0
+          startupTimeout: 90
+
+        registry:
+
+          device:
+            credentials:
+              ttl: 1m
+
+          amqp:
+            bindAddress: 0.0.0.0
+            keyPath: /etc/tls/tls.key
+            certPath: /etc/tls/tls.crt
+            keyFormat: PEM
+          rest:
+            bindAddress: 0.0.0.0
+            keyPath: /etc/tls/tls.key
+            certPath: /etc/tls/tls.crt
+            keyFormat: PEM
+
+        credentials:
+          svc:
+            maxBcryptIterations: 10
 
   logback-spring.xml: |+
       <?xml version="1.0" encoding="UTF-8"?>

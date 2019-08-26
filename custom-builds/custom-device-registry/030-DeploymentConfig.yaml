@@ -42,25 +42,36 @@ spec:
       - name: device-registry
         imagePullPolicy: Always
         env:
-        - name: SPRING_CONFIG_LOCATION
-          value: file:///etc/config/
-        - name: SPRING_PROFILES_ACTIVE
-          value: prometheus
-        - name: LOGGING_CONFIG
-          value: file:///etc/config/logback-spring.xml
-        - name: KUBERNETES_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: HONO_AUTH_HOST
-          value: iot-auth-service.$(KUBERNETES_NAMESPACE).svc
-        - name: HONO_AUTH_TRUST_STORE_PATH
-          value: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
-        - name: HONO_REGISTRATION_HOST
-          value: iot-device-registry.$(KUBERNETES_NAMESPACE).svc
-
-        - name: HONO_REGISTRY_SVC_MAX_DEVICES_PER_TENANT
-          value: "1000000"
+            - name: SPRING_CONFIG_LOCATION
+              value: 'file:///etc/config/'
+            - name: SPRING_PROFILES_ACTIVE
+            - name: LOGGING_CONFIG
+              value: 'file:///etc/config/logback-spring.xml'
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: HONO_AUTH_HOST
+              value: iot-auth-service.$(KUBERNETES_NAMESPACE).svc
+            - name: JAVA_APP_OPTS
+              value: >-
+                -Djava.net.preferIPv4Stack=true
+                -Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory
+            - name: HONO_AUTH_TRUST_STORE_PATH
+              value: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+            - name: ENMASSE_IOT_REGISTRY_INFINISPAN_HOST
+              value: infinispan-server
+            - name: ENMASSE_IOT_REGISTRY_INFINISPAN_PORT
+              value: '11222'
+            - name: ENMASSE_IOT_REGISTRY_INFINISPAN_USERNAME
+              value: app
+            - name: ENMASSE_IOT_REGISTRY_INFINISPAN_PASSWORD
+              value: test12
+            - name: ENMASSE_IOT_REGISTRY_INFINISPAN_SASL_SERVER_NAME
+              value: hotrod
+            - name: ENMASSE_IOT_REGISTRY_INFINISPAN_SASL_REALM
+              value: ApplicationRealm
 
         readinessProbe:
           httpGet:
