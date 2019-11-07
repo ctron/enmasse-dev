@@ -2,7 +2,7 @@
 kind: ImageStream
 apiVersion: v1
 metadata:
-  name: iot-override-device-registry-s2i
+  name: iot-override-device-registry-java-s2i
   labels:
     app: iot-override-device-registry
 spec:
@@ -15,6 +15,16 @@ spec:
     name: latest
     referencePolicy:
       type: Source
+---
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: iot-override-device-registry-s2i
+  labels:
+    app: iot-override-device-registry
+spec:
+  lookupPolicy:
+    local: true
 ---
 kind: ImageStream
 apiVersion: v1

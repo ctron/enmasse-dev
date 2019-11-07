@@ -2,6 +2,31 @@
 kind: BuildConfig
 apiVersion: v1
 metadata:
+  name: iot-override-device-registry-s2i
+spec:
+  triggers: 
+   - type: ImageChange
+   - type: ConfigChange
+  source: 
+    type: Git
+    git:
+      uri: https://github.com/ctron/enmasse-dev
+      ref: master
+  strategy: 
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: containers/fabric8-s2i-java-custom/Dockerfile
+      from:
+        kind: ImageStreamTag
+        name: iot-override-device-registry-java-s2i:latest
+  output: 
+    to:
+      kind: ImageStreamTag
+      name: iot-override-device-registry-s2i:latest
+---
+kind: BuildConfig
+apiVersion: v1
+metadata:
   name: iot-override-device-registry
   labels:
     app: iot-override-device-registry
