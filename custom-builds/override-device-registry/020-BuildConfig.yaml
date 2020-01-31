@@ -38,7 +38,7 @@ spec:
     type: Git
     git:
       uri: https://github.com/ctron/enmasse
-      ref: registry
+      ref: feature/jdbc_device_registry_1
   strategy: 
     type: source
     sourceStrategy:
@@ -47,10 +47,10 @@ spec:
         name: iot-override-device-registry-s2i:latest
       env:
       - name: MAVEN_ARGS_APPEND
-        value: -B -pl io.enmasse:iot-device-registry-infinispan --also-make
+        value: -B -pl io.enmasse:iot-device-registry-jdbc --also-make
       - name: ARTIFACT_DIR
-        value: iot/iot-device-registry-infinispan/target
+        value: iot/iot-device-registry-jdbc/target
   output:
     to:
       kind: ImageStreamTag
-      name: iot-device-registry-infinispan:latest
+      name: iot-device-registry-jdbc:latest

@@ -4,7 +4,7 @@ This is an example on how to use images from image streams, instead of
 directly pulling from quay.io or Docker Hub. It also works with OpenShift
 builds, as long as you can build the image in the same way on the cluster.
 
-The following example will replace the `iot-device-registry-infinispan` image.
+The following example will replace the `iot-device-registry-jdbc` image.
 It uses ImageStreams and a build with the S2I Java image.
 
 ## Deploy 
@@ -25,7 +25,7 @@ the image.
 
 You can set an image trigger for the deployment/stateful set as well:
 
-    oc set triggers deployment/iot-device-registry --from-image=iot-device-config-infinispan:latest --container device-registry
+    oc set triggers deployment/iot-device-registry --from-image=iot-device-config-jdbc:latest --container device-registry
 
 **Note:** This only works if the annotations of the deployment do not get overwritten
           by any operator.
@@ -33,8 +33,8 @@ You can set an image trigger for the deployment/stateful set as well:
 ## Override
 
 Afterwards you need to override the image name of the container you want to
-replace, with an unqualified image name, e.g. `iot-device-registry-infinispan:latest`
-instead of `quay.io/ctron/iot-device-registry-infinispan:latest`.
+replace, with an unqualified image name, e.g. `iot-device-registry-jdbc:latest`
+instead of `quay.io/ctron/iot-device-registry-jdbc:latest`.
 
 There are different ways, with different pros/cons.
 
@@ -52,8 +52,8 @@ metadata:
   name: default
 spec:
   imageOverrides:
-    iot-device-registry-infinispan:
-      name: iot-device-registry-infinispan:latest 
+    iot-device-registry-jdbc:
+      name: iot-device-registry-jdbc:latest
 ~~~
 
 From what I know, this currently works only with the IoTConfig. However it is easy
@@ -66,11 +66,11 @@ which override the built in image map.
 
 It is possible to override the image by setting the appropriate environment variable.
 
-    oc set env dc enmasse-operator IOT_DEVICE_REGISTRY_INFINISPAN_IMAGE=iot-device-registry-infinispan:latest
+    oc set env dc enmasse-operator IOT_DEVICE_REGISTRY_JDBC_IMAGE=iot-device-registry-jdbc:latest
 
 Theoretically you could remove the override later on by executing:
 
-    oc set env dc enmasse-operator IOT_DEVICE_REGISTRY_INFINISPAN_IMAGE-
+    oc set env dc enmasse-operator IOT_DEVICE_REGISTRY_JDBC_IMAGE-
 
 However, the default deployment of EnMasse sets all environment variables by default, to
 override the internal image map, which sometimes contains wrong values. So clearing

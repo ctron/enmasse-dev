@@ -29,7 +29,7 @@ spec:
 kind: ImageStream
 apiVersion: v1
 metadata:
-  name: iot-device-registry-infinispan
+  name: iot-device-registry-jdbc
   labels:
     app: iot-override-device-registry
 spec:
