@@ -25,7 +25,7 @@ the image.
 
 You can set an image trigger for the deployment/stateful set as well:
 
-    oc set triggers deployment/iot-device-registry --from-image=iot-device-config-jdbc:latest --container device-registry
+    oc set triggers deployment/iot-device-registry --from-image=iot-device-config-jdbc:latest --containers device-registry
 
 **Note:** This only works if the annotations of the deployment do not get overwritten
           by any operator.
